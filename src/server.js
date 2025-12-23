@@ -1,6 +1,5 @@
-import express from "express";
+import { app } from "./app.js";
 
-const app = express();
 const port = 3000
 
 app.get("/", (req, res) => {
@@ -36,6 +35,26 @@ app.get("/", (req, res) => {
             </body>
         </html>
     `);
+});
+
+let users = [{ id: "1", name: "Me!", email: "me@example.com" }]
+
+app.get("/users", (req, res) => {
+    res.status(200).json(users);
+});
+
+app.post("/users", (req, res) => {
+    const {name, email} = req.body;
+
+    const newUser = {
+        id: String(users.length + 1),
+        name: name,
+        email: email,
+    };
+
+    users.push(newUser);
+
+    res.status(200).json(newUser);
 });
 
 app.listen(3000, () => {
