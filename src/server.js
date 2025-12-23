@@ -54,7 +54,7 @@ app.post("/users", (req, res) => {
 
     users.push(newUser);
 
-    res.status(200).json(newUser);
+    res.status(201).json(newUser);
 });
 
 app.listen(3000, () => {
