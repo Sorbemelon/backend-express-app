@@ -57,6 +57,21 @@ app.post("/users", (req, res) => {
     res.status(201).json(newUser);
 });
 
+// The function inside is called Route Handler / Controller
+app.delete("/users/:id", (req, res) => {
+    const userId = req.params.id;
+
+    const userIndex = users.findIndex((user) => user.id === userId);
+
+    if (userIndex !== -1) {
+    users.splice(userIndex, 1);
+
+    res.status(200).send(`Uesr with ID ${userId} deleted ✅`);
+    } else {
+        res.status(404).send("User not found.");
+    }
+})
+
 app.listen(3000, () => {
     console.log(`Server running on port ${port} ✅`);
 });
