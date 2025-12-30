@@ -19,6 +19,10 @@ app.use(express.json());
 
 app.use("/api", apiRoutes)
 
+app.get("/", (req, res) => { 
+    res.send("Hello, World!");
+});
+
 // Catch-all for 404 Not Found
 app.use((req, res, next) => {
     const error = new Error(`Not found: ${req.method} ${req.originalUrl}`);
