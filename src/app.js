@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { router as apiRoutes } from "./routes/index.js";
+import cookieParser from "cookie-parser";
 
 export const app = express();
 
@@ -16,6 +17,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.use("/api", apiRoutes)
 
