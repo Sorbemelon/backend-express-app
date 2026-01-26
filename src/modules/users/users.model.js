@@ -5,10 +5,23 @@ import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
     {
-        username: { type: String, required: true, trim: true },
+        username: { type: String, trim: true },
         role: { type: String, enum: ["user", "admin"], default: "user" },
         email: { type: String, required: true, unique: true, lowercase: true },
         password: { type: String, required: true, minlength: 6, select: false},
+        embedding: {
+            status: {
+                type: String,
+                enum: ["PENDING", "PROCESSING", "READY", "FAILED"],
+                default: "PENDING"
+            },
+            dims: {type: Number, default: 3072 },
+            vector: { type: [Number], select: false },
+            attemps: { type: Number, default: 0 },
+            lastAttemptAt: { type: Date, default: null },
+            updatedAt: { type: Date, default: null },
+            lastError: { type: String, default: null }
+        }
     },
     {
         timestamps: true

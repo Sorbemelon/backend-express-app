@@ -4,7 +4,8 @@ import {
     createUser2,
     deleteUser2,
     updateUser2,
-    getUser2
+    getUser2,
+    askUsers2
 } from "../../modules/users/users.controller.js";
 import { User } from "../../modules/users/users.model.js";
 import bcrypt from "bcrypt";
@@ -15,16 +16,45 @@ export const router = Router();
 
 router.get("/", getUsers2);
 
+// Check user authentication (check if user has valid token)
+router.get("/auth/cookie/me", authUser, async (req, res, next) => {
+    try {
+        const userId = req.user.user._id;
+
+        const user = await User.findById(userId)
+        
+        if ( !user ) {
+            return res.status(401).json({
+                error: true,
+                message: "Unauthenticated"
+            })
+        }
+
+        res.status(200).json({
+            error: false,
+            user: {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                role: user.role
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.post("/auth/ai/ask", authUser, askUsers2);
+
 router.get("/:id", getUser2);
 
 router.post("/", createUser2);
 
-router.delete("/:id", deleteUser2);
+router.delete("/:id", authUser, deleteUser2);
 
-router.patch("/:id", updateUser2);
+router.patch("/:id", authUser, updateUser2);
 
 // Login a user - jwt signed toker (token in cookies)
-
 router.post("/auth/cookie/login", async (req, res, next) => { 
     const { email, password } = req.body;
 
@@ -108,30 +138,3 @@ router.post("/auth/cookie/logout", (req, res) => {
     });
 });
 
-// Check user authentication (check if user has valid token)
-router.get("/auth/cookie/me", authUser, async (req, res, next) => {
-    try {
-        const userId = req.user.user._id;
-
-        const user = await User.findById(userId)
-        
-        if ( !user ) {
-            return res.status(401).json({
-                error: true,
-                message: "Unauthenticated"
-            })
-        }
-
-        res.status(200).json({
-            error: false,
-            user: {
-                _id: user._id,
-                username: user.username,
-                email: user.email,
-                role: user.role
-            }
-        });
-    } catch (error) {
-        next(error);
-    }
-});

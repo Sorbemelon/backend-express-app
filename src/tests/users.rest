@@ -1,15 +1,18 @@
 ### GET request to read all users
 GET http://localhost:3000/api/v2/users
 
+### GET request to read a user
+GET http://localhost:3000/api/v2/users/1
+
 ### POST request to create a new user
 POST http://localhost:3000/api/v2/users
 Content-Type: application/json
 
 {
-    "username": "Charlie8",
-    "email": "charlie8@example.com",
-    "role": "user",
-    "password": "87654321111"
+    "username": "Charlie9",
+    "email": "ai1@example.com",
+    "password": "87654321111",
+    "role": "admin"
 }
 
 
@@ -21,7 +24,7 @@ POST http://localhost:3000/api/v2/users/auth/cookie/login
 Content-Type: application/json
 
 {
-    "email": "charlie8@example.com",
+    "email": "ai1@example.com",
     "password": "87654321111"
 }
 
@@ -30,3 +33,12 @@ POST http://localhost:3000/api/v2/users/auth/cookie/logout
 
 ### GET Check user authentication
 GET http://localhost:3000/api/v2/users/auth/cookie/me
+
+### Ask AI
+POST http://localhost:3000/api/v2/users/auth/ai/ask
+Content-Type: application/json
+
+{
+    "question": "Who are admins?",
+    "topK": 5
+}
