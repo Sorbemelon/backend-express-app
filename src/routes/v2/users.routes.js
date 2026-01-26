@@ -97,7 +97,7 @@ router.post("/auth/cookie/login", async (req, res, next) => {
         res.cookie("accessToken", token, {
             httpOnly: true,
             secure: isProd,
-            samSite: isProd ? "none" : "lax",
+            sameSite: isProd ? "none" : "lax",
             path: "/",
             maxAge: 60 * 60 * 1000 // 1 hour
         });
@@ -126,9 +126,9 @@ router.post("/auth/cookie/logout", (req, res) => {
     const isProd = process.env.NODE_ENV === "production";
 
     res.clearCookie("accessToken", {
-        httpOnlyy: true,
+        httpOnly: true,
         secure: isProd,
-        sameDite: isProd ? "none" : "lax",
+        sameSite: isProd ? "none" : "lax",
         path: "/"
     });
 
